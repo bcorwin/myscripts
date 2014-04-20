@@ -20,7 +20,7 @@ TO = 'bscorwin@gmail.com'
 GMAIL_USER = 'bcoreserver@gmail.com'
 GMAIL_PASS = 'bsc0330!'
 
-ser = serial.Serial('COM3', 9600)
+#ser = serial.Serial('COM3', 9600)
 
 def mainLoop():
 	#Clean slate
@@ -43,10 +43,11 @@ def mainLoop():
 				modParms()
 			keyChk = 0
 		if ambTemps[1] == 0:
-			print("Reading...")
+			nextLog = time.strftime("%H:%M",time.localtime())
+			print("Reading... (Next log at: ", nextLog, ")")
 		
-		currAmbTemp, currLightVal = readArduino()
-		#currAmbTemp, currLightVal = [round(random.gauss(70,20),2), round(random.gauss(10,5),2)]
+		#currAmbTemp, currLightVal = readArduino()
+		currAmbTemp, currLightVal = [round(random.gauss(70,20),2), round(random.gauss(10,5),2)]
 
 		ambTemps[0] += currAmbTemp
 		lightVals[0] += currLightVal
@@ -211,6 +212,7 @@ def modParms():
 	key = input(text)
 	if key.isnumeric():
 		if int(key) >= 0:
+			contactTempMin = key
 			contactTempMin = key
 			print("New min contact temp value = ", contactTempMin)
 		else:
