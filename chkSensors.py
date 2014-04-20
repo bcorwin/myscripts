@@ -21,7 +21,9 @@ TO = 'bscorwin@gmail.com'
 GMAIL_USER = 'bcoreserver@gmail.com'
 GMAIL_PASS = 'bsc0330!'
 
-ser = serial.Serial('COM3', 9600)
+testMode = "Y"
+if testMode != "Y":
+	ser = serial.Serial('COM3', 9600)
 
 def mainLoop():
 	#Clean slate
@@ -47,10 +49,15 @@ def mainLoop():
 			keyChk = 0
 		if ambTemps[1] == 0:
 			nextLog = datetime.datetime.now() + datetime.timedelta(minutes = minLog)
-			print("*** Reading (Next log at: ", nextLog.strftime("%H:%M"), ") ***")
+			if testMode != "Y":
+				print("*** Reading (Next log at: ", nextLog.strftime("%H:%M"), ") ***")
+			else:
+				print("*** TEST MODE ON (Next log at: ", nextLog.strftime("%H:%M"), ") ***")
 		
-		currAmbTemp, currLightVal = readArduino()
-		#currAmbTemp, currLightVal = [round(random.gauss(70,20),2), round(random.gauss(10,5),2)]
+		if testMode != "Y":
+			currAmbTemp, currLightVal = readArduino()
+		else:
+			currAmbTemp, currLightVal = [round(random.gauss(70,20),2), round(random.gauss(10,5),2)]
 
 		ambTemps[0] += currAmbTemp
 		lightVals[0] += currLightVal
