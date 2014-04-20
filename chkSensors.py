@@ -13,17 +13,19 @@ ambTempMax = 75
 contactTempMin = 68
 contactTempMax = 72
 
-emailUpdateFreq = 1 #Hours between update emails
-minEmailFreq = 30 #Minimum minutes between error emails
+emailUpdateFreq = 2 #Hours between update emails
+minEmailFreq = 60 #Minimum minutes between error emails
 minLog = 5 #Number of minutes between logs to google (data under this is aggregated)
  
 TO = 'bscorwin@gmail.com'
 GMAIL_USER = 'bcoreserver@gmail.com'
 GMAIL_PASS = 'bsc0330!'
 
-testMode = "Y"
+testMode = input("Test mode? (Y/N) ").upper()
 if testMode != "Y":
-	ser = serial.Serial('COM3', 9600)
+	comPort = input("Enter COM port: ").upper()
+	comPort = "COM" + comPort
+	ser = serial.Serial(comPort, 9600)
 
 def mainLoop():
 	#Clean slate
@@ -42,20 +44,25 @@ def mainLoop():
 		if keyChk == 1:
 			keyPressed = msvcrt.getch()
 			if keyPressed == b'\x1b':
-				print("Cancled.")
+				print("Cancelled.")
 				break
 			elif keyPressed in [b'c', b'C']:
 				print("Press ESC to end logging")
 				print("Press 'c' for list of commands")
 				print("Press 'm' to view/modify max and mins")
+				print("Press 'w' to view/modify wait times")
 				print("Press 'l' to log data values currently in memory")
 				print("Press 's' to force update email and log <- not working yet")
 				print("")
-				print("*** Continuing reading ***")
+				print("*** Reading Continued ***")
 			elif keyPressed in [b'm', b'M']:
 				modParms()
 				print("")
-				print("*** Continuing reading ***")
+				print("*** Reading Continued ***")
+			elif keyPressed in [b'w', b'W']:
+				modWaits()
+				print("")
+				print("*** Reading Continued 	***")
 			elif keyPressed in [b'l', b'L']:
 				forceLog = "Y"
 			keyChk = 0
@@ -211,7 +218,7 @@ def modParms():
 	key = input(text)
 	if key.isnumeric():
 		if int(key) >= 0:
-			lightMax = key
+			lightMax = int(key)
 			print("New max light value = ", lightMax)
 		else:
 			print("Not a valid number, no changes made.")
@@ -221,7 +228,7 @@ def modParms():
 	key = input(text)
 	if key.isnumeric():
 		if int(key) >= 0:
-			ambTempMin = key
+			ambTempMin = int(key)
 			print("New min ambient light value = ", ambTempMin)
 		else:
 			print("Not a valid number, no changes made.")
@@ -231,7 +238,7 @@ def modParms():
 	key = input(text)
 	if key.isnumeric():
 		if int(key) >= 0:
-			ambTempMax = key
+			ambTempMax = int(key)
 			print("New max ambient temp value = ", ambTempMax)
 		else:
 			print("Not a valid number, no changes made.")
@@ -241,8 +248,7 @@ def modParms():
 	key = input(text)
 	if key.isnumeric():
 		if int(key) >= 0:
-			contactTempMin = key
-			contactTempMin = key
+			contactTempMin = int(key)
 			print("New min contact temp value = ", contactTempMin)
 		else:
 			print("Not a valid number, no changes made.")
@@ -252,8 +258,41 @@ def modParms():
 	key = input(text)
 	if key.isnumeric():
 		if int(key) >= 0:
-			contactTempMax = key
+			contactTempMax = int(key)
 			print("New max contact temp value = ", contactTempMax)
+		else:
+			print("Not a valid number, no changes made.")
+	else:
+		print("Value not changed")
+
+def modWaits():
+	global emailUpdateFreq, minEmailFreq, minLog
+	text = "Enter wait time in HOURS for time between update emails (default = " + str(emailUpdateFreq) + "):"
+	key = input(text)
+	if key.isnumeric():
+		if int(key) >= 0:
+			emailUpdateFreq = int(key)
+			print("New update wait time = ", emailUpdateFreq)
+		else:
+			print("Not a valid number, no changes made.")
+	else:
+		print("Value not changed")
+	text = "Enter wait time in MINUTES for time between out of range emails (default = " + str(minEmailFreq) + "):"
+	key = input(text)
+	if key.isnumeric():
+		if int(key) >= 0:
+			minEmailFreq = int(key)
+			print("New update wait time = ", minEmailFreq)
+		else:
+			print("Not a valid number, no changes made.")
+	else:
+		print("Value not changed")
+	text = "Enter wait time in MINUTES for time between logs to Google (default = " + str(minLog) + "):"
+	key = input(text)
+	if key.isnumeric():
+		if int(key) >= 0:
+			minLog = int(key)
+			print("New update wait time = ", minLog)
 		else:
 			print("Not a valid number, no changes made.")
 	else:
