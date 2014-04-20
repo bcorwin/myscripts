@@ -34,18 +34,30 @@ def mainLoop():
 	ambTemps = [0,0]
 	lightVals = [0,0]
 	
-	print("Press ESC to cancel or 'm' to modify max/min values.")
+	print("Press ESC to cancel or 'c' for more options.")
 	while True:
+		forceLog = "N"
+		forceUpdate = "N"
 		keyChk = msvcrt.kbhit()
 		if keyChk == 1:
 			keyPressed = msvcrt.getch()
 			if keyPressed == b'\x1b':
 				print("Cancled.")
 				break
+			elif keyPressed in [b'c', b'C']:
+				print("Press ESC to end logging")
+				print("Press 'c' for list of commands")
+				print("Press 'm' to view/modify max and mins")
+				print("Press 'l' to log data values currently in memory")
+				print("Press 's' to force update email and log <- not working yet")
+				print("")
+				print("*** Continuing reading ***")
 			elif keyPressed in [b'm', b'M']:
 				modParms()
+				print("")
+				print("*** Continuing reading ***")
 			elif keyPressed in [b'l', b'L']:
-				print("Reserved for instant log. Not done yet")
+				forceLog = "Y"
 			keyChk = 0
 		if ambTemps[1] == 0:
 			nextLog = datetime.datetime.now() + datetime.timedelta(minutes = minLog)
@@ -69,7 +81,7 @@ def mainLoop():
 		lightVal = round(lightVals[0]/lightVals[1],1)
 		
 		currTime = time.time()
-		if currTime > (lastLogAttempt + 60*minLog):
+		if currTime > (lastLogAttempt + 60*minLog) or forceLog == "Y":
 			ambTemps = [0,0]
 			lightVals = [0,0]
 			
@@ -187,7 +199,14 @@ def logValues2Google(beerName, currentLightval, ambTemp, contactTemp, status,lig
 		return[0, "Unknown Failure"]
 
 def modParms():
-	global lightMax,ambTempMin,ambTempMax,contactTempMin,contactTempMax
+	global beerName, lightMax,ambTempMin,ambTempMax,contactTempMin,contactTempMax
+	text = "Enter beer name (current = " + beerName + "):"
+	key = input(text)
+	if key != "":
+		beerName = key
+		print("New beer name = ", beerName)
+	else:
+		print("Value not changed")
 	text = "Enter max light value (default = " + str(lightMax) + "):"
 	key = input(text)
 	if key.isnumeric():
