@@ -31,7 +31,7 @@ def mainLoop():
 	ambTemps = [0,0]
 	lightVals = [0,0]
 	
-	print("Press ESC to cancel.")
+	print("Press ESC to cancel or 'm' to modify max/min values.")
 	while True:
 		keyChk = msvcrt.kbhit()
 		if keyChk == 1:
@@ -39,6 +39,8 @@ def mainLoop():
 			if keyPressed == b'\x1b':
 				print("Cancled.")
 				break
+			elif keyPressed in [b'm', b'M']:
+				modParms()
 			keyChk = 0
 		if ambTemps[1] == 0:
 			print("Reading...")
@@ -172,5 +174,58 @@ def logValues2Google(beerName, currentLightval, ambTemp, contactTemp, status,lig
 		return[response.status, response.reason]
 	except:
 		return[0, "Unknown Failure"]
+
+def modParms():
+	global lightMax,ambTempMin,ambTempMax,contactTempMin,contactTempMax
+	text = "Enter max light value (default = " + str(lightMax) + "):"
+	key = input(text)
+	if key.isnumeric():
+		if int(key) >= 0:
+			lightMax = key
+			print("New max light value = ", lightMax)
+		else:
+			print("Not a valid number, no changes made.")
+	else:
+		print("Value not changed")
+	text = "Enter min ambient light value (default = " + str(ambTempMin) +"):"
+	key = input(text)
+	if key.isnumeric():
+		if int(key) >= 0:
+			ambTempMin = key
+			print("New min ambient light value = ", ambTempMin)
+		else:
+			print("Not a valid number, no changes made.")
+	else:
+		print("Value not changed")
+	text = "Enter max ambient temp value (default = " + str(ambTempMax) +"):"
+	key = input(text)
+	if key.isnumeric():
+		if int(key) >= 0:
+			ambTempMax = key
+			print("New max ambient temp value = ", ambTempMax)
+		else:
+			print("Not a valid number, no changes made.")
+	else:
+		print("Value not changed")
+	text = "Enter min contact temp value (default = " + str(contactTempMin) +"):"
+	key = input(text)
+	if key.isnumeric():
+		if int(key) >= 0:
+			contactTempMin = key
+			print("New min contact temp value = ", contactTempMin)
+		else:
+			print("Not a valid number, no changes made.")
+	else:
+		print("Value not changed")
+	text = "Enter max contact temp value (default = " + str(contactTempMax) +"):"
+	key = input(text)
+	if key.isnumeric():
+		if int(key) >= 0:
+			contactTempMax = key
+			print("New max contact temp value = ", contactTempMax)
+		else:
+			print("Not a valid number, no changes made.")
+	else:
+		print("Value not changed")
 
 mainLoop()
