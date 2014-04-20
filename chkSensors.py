@@ -207,6 +207,7 @@ def logValues2Google(beerName, currentLightval, ambTemp, contactTemp, status,lig
 
 def modParms():
 	global beerName, lightMax,ambTempMin,ambTempMax,contactTempMin,contactTempMax
+	print("Enter new value or press 'ENTER' to keep as default")
 	text = "Enter beer name (current = " + beerName + "):"
 	key = input(text)
 	if key != "":
@@ -267,6 +268,7 @@ def modParms():
 
 def modWaits():
 	global emailUpdateFreq, minEmailFreq, minLog
+	print("Enter new value or press 'ENTER' to keep as default")
 	text = "Enter wait time in HOURS for time between update emails (default = " + str(emailUpdateFreq) + "):"
 	key = input(text)
 	if key.isnumeric():
