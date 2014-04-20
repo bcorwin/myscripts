@@ -20,7 +20,7 @@ TO = 'bscorwin@gmail.com'
 GMAIL_USER = 'bcoreserver@gmail.com'
 GMAIL_PASS = 'bsc0330!'
 
-ser = serial.Serial('COM5', 9600)
+ser = serial.Serial('COM3', 9600)
 
 def mainLoop():
 	#Clean slate
@@ -166,8 +166,11 @@ def logValues2Google(beerName, currentLightval, ambTemp, contactTemp, status,lig
 	link += "&entry.855115684=" + ambTempMin
 	link += "&fbzx=1011733878975383640&pageHistory=0"
 	
-	c.request("GET", link)
-	response = c.getresponse()
-	return[response.status, response.reason]
+	try:
+		c.request("GET", link)
+		response = c.getresponse()
+		return[response.status, response.reason]
+	except:
+		return[0, "Unknown Failure"]
 
 mainLoop()
