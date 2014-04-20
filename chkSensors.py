@@ -1,3 +1,4 @@
+import datetime
 import time
 import serial
 import smtplib
@@ -20,7 +21,7 @@ TO = 'bscorwin@gmail.com'
 GMAIL_USER = 'bcoreserver@gmail.com'
 GMAIL_PASS = 'bsc0330!'
 
-#ser = serial.Serial('COM3', 9600)
+ser = serial.Serial('COM3', 9600)
 
 def mainLoop():
 	#Clean slate
@@ -41,13 +42,15 @@ def mainLoop():
 				break
 			elif keyPressed in [b'm', b'M']:
 				modParms()
+			elif keyPressed in [b'l', b'L']:
+				print("Reserved for instant log. Not done yet")
 			keyChk = 0
 		if ambTemps[1] == 0:
-			nextLog = time.strftime("%H:%M",time.localtime())
-			print("Reading... (Next log at: ", nextLog, ")")
+			nextLog = datetime.datetime.now() + datetime.timedelta(minutes = minLog)
+			print("*** Reading (Next log at: ", nextLog.strftime("%H:%M"), ") ***")
 		
-		#currAmbTemp, currLightVal = readArduino()
-		currAmbTemp, currLightVal = [round(random.gauss(70,20),2), round(random.gauss(10,5),2)]
+		currAmbTemp, currLightVal = readArduino()
+		#currAmbTemp, currLightVal = [round(random.gauss(70,20),2), round(random.gauss(10,5),2)]
 
 		ambTemps[0] += currAmbTemp
 		lightVals[0] += currLightVal
