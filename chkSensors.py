@@ -319,4 +319,15 @@ def log2computer(fileName, beerName, currentLightval, ambTemp, contactTemp, stat
 	fd = open(fileName,'a')
 	fd.write(addRow)
 	fd.close()	
-mainLoop()
+
+#Future, try to re run code until working
+try:
+	mainLoop()
+except:
+	print("Attempting to send email...")
+	subject = "!CHECK SENSOR PROGRAM NOT RUNNING DO TO UNKNOWN ERROR!"
+	body = ""
+	isSent = ""
+	while isSent != "SENT":
+		isSent = send_email(subject,body)
+	print(" EMAIL", isSent)
