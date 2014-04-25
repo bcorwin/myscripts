@@ -5,6 +5,7 @@ import smtplib
 import httplib2
 import msvcrt
 import random
+import csv
 
 beerName = "White House Honey Ale"
 lightMax = 50
@@ -26,6 +27,8 @@ if testMode != "Y":
 	comPort = input("Enter COM port: ").upper()
 	comPort = "COM" + comPort
 	ser = serial.Serial(comPort, 9600)
+else:
+	beerName = "TEST"
 
 def mainLoop():
 	#Clean slate
@@ -35,6 +38,7 @@ def mainLoop():
 	lastLogAttempt = currTime
 	ambTemps = [0,0]
 	lightVals = [0,0]
+	fileName = genCompLog()
 	
 	print("Press ESC to cancel or 'c' for more options.")
 	while True:
@@ -118,6 +122,8 @@ def mainLoop():
 			responseStatus, responseReason = logValues2Google(beerName, lightVal, ambTemp, contactTemp, status, lightMax, ambTempMin, ambTempMax, "N", "N")
 			lastLogAttempt = currTime
 			if responseStatus != 200:
+				print("  LOG FAILED, LOGGING LOCALLY")
+				log2computer(fileName, beerName, lightVal, ambTemp, contactTemp, status, lightMax, ambTempMin, ambTempMax, "N", "N")
 				body = "BEER VITALS FAILED TO BE LOGGED\n\n" + body
 			else:
 				print(" ", status,[ambTemp, lightVal], "logged")
@@ -300,4 +306,17 @@ def modWaits():
 	else:
 		print("Value not changed")
 
+def genCompLog():
+	fileName = "SENSOR LOG " + str(datetime.datetime.now().strftime("%Y%m%d_%H%M")) + ".csv"
+	with open(fileName, 'w', newline='') as csvfile:
+		logfile = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+		logfile.writerow(['Timestamp'] + ['beerName']+['currentLightval']+['ambTemp']+['contactTemp']+['status']+['lightMax']+['ambTempMin']+['ambTempMax']+['contactTempMin']+['contactTempMax'])
+	return fileName
+
+def log2computer(fileName, beerName, currentLightval, ambTemp, contactTemp, status,lightMax, ambTempMin, ambTempMax, contactTempMin, contactTempMax):
+	addRow = str(beerName) + "," + str(currentLightval) + "," + str(ambTemp) + "," + str(contactTemp) + "," + str(status) + "," + str(lightMax) + "," + str(ambTempMin) + "," + str(ambTempMax) + "," + str(contactTempMin) + "," + str(contactTempMax) + "\n"
+	addRow = str(datetime.datetime.now().strftime("%m/%d/%Y %H:%M:%S")) + "," + addRow
+	fd = open(fileName,'a')
+	fd.write(addRow)
+	fd.close()	
 mainLoop()
