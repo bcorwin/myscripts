@@ -187,9 +187,12 @@ def say_nextArrival(stpid="", last=""):
 	end = ""
 	waitTm, isApp, isDly, isFlt, isSch = nextTrains[1][1]
 	if isSch == "1":
-		end += "is scheduled for "
-	
-	if isApp == "1":
+		end += "is scheduled to arrive in "
+		if int(waitTm) != 1:
+			end += waitTm + " minutes"
+		else:
+			end += waitTm + " minute"
+	elif isApp == "1":
 		end += "is due"
 	elif isDly == "1":
 		end += "is delayed"
@@ -210,7 +213,8 @@ def say_nextArrival(stpid="", last=""):
 start = time()
 last = ""
 
-while time() <= start + 60*5:
-	last = say_nextArrival(stpid="30229", last = last)
-	sleep(15)
-print("END")
+while time() <= start + 60*10:
+	#last = say_nextArrival(stpid="30229", last = last)
+	last = say_nextArrival(stpid="30011", last = last)
+	sleep(5)
+speaker.Speak("Train announcements turned off.")
