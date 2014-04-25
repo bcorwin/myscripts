@@ -8,8 +8,8 @@ import random
 
 beerName = "White House Honey Ale"
 lightMax = 50
-ambTempMin = 65
-ambTempMax = 75
+ambTempMin = 64
+ambTempMax = 70
 contactTempMin = 68
 contactTempMax = 72
 
