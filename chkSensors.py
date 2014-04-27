@@ -69,6 +69,7 @@ def mainLoop():
 				print("*** Reading Continued 	***")
 			elif keyPressed in [b'l', b'L']:
 				forceLog = "Y"
+				print("Forcing log...")
 			keyChk = 0
 		if ambTemps[1] == 0:
 			nextLog = datetime.datetime.now() + datetime.timedelta(minutes = minLog)
