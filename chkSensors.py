@@ -20,7 +20,9 @@ minLog = 5 #Number of minutes between logs to google (data under this is aggrega
  
 TO = 'bscorwin@gmail.com'
 GMAIL_USER = 'bcoreserver@gmail.com'
-GMAIL_PASS = 'bsc0330!'
+passFile = open ('C:\\Python33\\Scripts\\bcoreserver_pass.txt', 'r')
+GMAIL_PASS = passFile.read()
+passFile.close()
 
 testMode = input("Test mode? (Y/N) ").upper()
 if testMode != "Y":
