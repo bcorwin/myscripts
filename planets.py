@@ -115,34 +115,33 @@ def prompt():
 			if indate.lower() == "exit":
 				print("Exiting...")
 				break
-			try:
+			try:	
 				indate = datetime.datetime(int(indate[0:4]), int(indate[4:6]), int(indate[6:8]))
 				plotPos(date = indate)
 			except:
 				print("Invalid input. Try again.")
 		else:
-			getDate = 1
 			plotPos()
-#prompt()
+prompt()
+
 #Animate
+# stdt = datetime.datetime.utcnow()
+# getPos(date = stdt)
+# fig = plt.figure()
+# ax = plt.axes(polar = True)
 
-stdt = datetime.datetime.utcnow()
-getPos(date = stdt)
-fig = plt.figure()
-ax = plt.axes(polar = True)
+# yticks = []
+# for curr in helioPos:
+	# yticks.append(orbitalElements[curr.upper()][2])
+# ax.set_ylim((0, max(yticks) + .4))
+# ax.axes.set_yticks(yticks)
+# ax.axes.set_yticklabels([])
 
-yticks = []
-for curr in helioPos:
-	yticks.append(orbitalElements[curr.upper()][2])
-ax.set_ylim((0, max(yticks) + .4))
-ax.axes.set_yticks(yticks)
-ax.axes.set_yticklabels([])
-
-ax.axes.set_xticks([])
-ax.axes.set_xticklabels([])
+# ax.axes.set_xticks([])
+# ax.axes.set_xticklabels([])
 
 
-ss, = ax.plot([], [], marker = "o", ls = ".")
+# ss, = ax.plot([], [], marker = "o", ls = ".")
 
 def getvalues(date = ""):
 	getPos(date = date)
@@ -169,7 +168,5 @@ def animate(i):
 	title = plotDate.strftime("%Y-%m-%d %Z")
 	return ss,
 
-anim = animation.FuncAnimation(fig, animate, init_func=init, frames=30, interval=1, blit=True)
-plt.show()
-
-#Find common denominator so it loops nearly flawlessly <- 50 years
+#anim = animation.FuncAnimation(fig, animate, init_func=init, frames=30, interval=1, blit=True)
+#plt.show()
