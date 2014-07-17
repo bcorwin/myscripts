@@ -71,6 +71,7 @@ def mainLoop():
 				print("*** Reading Continued 	***")
 			elif keyPressed in [b'l', b'L']:
 				forceLog = "Y"
+				print("Forcing log...")
 			keyChk = 0
 		if ambTemps[1] == 0:
 			nextLog = datetime.datetime.now() + datetime.timedelta(minutes = minLog)
@@ -131,7 +132,7 @@ def mainLoop():
 				print(" ", status,[ambTemp, lightVal], "logged")
 
 			##Send Email, check if sent and update status accordingly
-			if subject != "" and body != "":
+			if subject != "" or body != "":
 				print("  EMAIL",send_email(subject,body))
 
 		#Log data local too? or only if failed to update online? would have to sync time stamps some how, or not.
